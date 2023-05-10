@@ -1,0 +1,21 @@
+{
+  "TG_BOT_TOKEN": "YOUR-TELEGRAM-BOT-TOKEN",
+  "AVAILABLE_LANGUAGES": [
+    "en",
+    "ru"
+  ],
+  "LANGUAGES_CHARACTERISTICS": {
+    "ru": {
+      "flag": "🇷🇺",
+      "name": "Русский"
+    },
+    "en": {
+      "flag": "🇬🇧",
+      "name": "English"
+    }
+  },
+  "DEFAULT_LANGUAGE": "en",
+  "ADMINS_ID": [
+    0, 1, 2
+  ]
+}
