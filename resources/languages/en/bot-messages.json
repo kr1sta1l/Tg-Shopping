@@ -1,0 +1,56 @@
+{
+  "language_characteristics": {
+    "name": "English",
+    "code": "en",
+    "flag": "🇬🇧"
+  },
+  "greeting_message_with_name": "*Hi, {user_name}!*\n\nI am a bot that will help you find the most profitable product on such marketplaces as: ...\n\n*To start the search, click on the corresponding button in the menu*",
+  "greeting_message": "*Hello!*\n\nI am a bot that will help you find the most profitable product on such marketplaces as:\n*● DNS\n● Globus \n● М.Video\n● Wildberries*\n\n*To start the search, click on the corresponding button in the menu*",
+  "help_message": "To get a list of required products, send me the command \"Find <product name>\" and I will start the search.\nIn addition, you can specify a ban list of words so that I do not give out goods containing a word from this list in the name\n\n*Request example:*\n{find_command} iPhone 5s {without_command} case, glass, resale",
+  "user_added_to_queue_message": "🛎 *Your request has been added to the queue.*",
+  "available_languages": "Available languages:",
+  "language_changed_message": "🔔 *Language changed to {language}*",
+  "error_message": "An internal error has occurred. The /start command should fix most of them. Otherwise, send me an error message.",
+  "admin_menu": "*Admin menu:*",
+  "find_commands": [
+    "find",
+    "search",
+    "find product",
+    "search product",
+    "find products",
+    "search products"
+  ],
+  "without_commands": [
+    "without",
+    "exclude"
+  ],
+  "admin_commands": {
+    "get_statistics": "Get statistics",
+    "get_users": "Get a list of users",
+    "get_user": "Get user information",
+    "get_sent_mails": "Get sent mailings",
+    "create_mail": "Create a message for mailing"
+  },
+  "admin_create_mail_message": "Reply to this message with the text that will be sent to users. If necessary, don't forget to attach the files.",
+  "start_message_reply_commands": {
+    "good_searching": "🔎 Product search",
+    "change_language": "🌍 Change language",
+    "help": "📑 Help"
+  },
+  "good_info_message": {
+    "shop_name_title": "Shop",
+    "good_name_title": "Product",
+    "price_title": "Price",
+    "now_price_title": "Current price",
+    "prev_price_title": "Previous price",
+    "sale_title": "discount",
+    "rate_title": "Rating",
+    "one_review_title": "review",
+    "multiple_reviews_title": "reviews",
+    "delivery_time_title": "Delivery time",
+    "good_link_title": "Product link",
+    "click_title": "CLICK"
+  },
+  "cant_find_products_message": "😢 *Unfortunately, I couldn't find anything suitable...*",
+  "started_processing_the_request_message": "🛎 *Your request has started to be processed!*"
+}
