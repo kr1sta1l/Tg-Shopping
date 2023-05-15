@@ -265,17 +265,23 @@ class TelegramBot:
             return self.process_text_commands(message, user)
 
     def process_text_commands(self, message, user: User):
+        flag = True
         text = message.text
         reply_commands_list: dict = self.localizer.get_localized_dict(user.language, "start_message_reply_commands")
         for key in reply_commands_list.keys():
             if reply_commands_list[key] == text:
                 if key == "good_searching":
+                    flag = False
                     self.help_message_process(message)
                 elif key == "change_language":
+                    flag = False
                     self.send_switch_language_message(message, user)
                 elif key == "help":
+                    flag = False
                     sent_message = self.localizer.get_localized_text(user.language, "greeting_message")
                     self.send_text_message(user.tg_id, sent_message, parse_mode="Markdown")
+        if flag:
+            self.help_message_process(message)
 
     def send_good_list_to_user(self, user_id, goods_list: list[Good], reply_to_message_id: int):
         user = self.users_database.get_user(user_id)
