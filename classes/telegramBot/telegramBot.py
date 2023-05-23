@@ -27,6 +27,7 @@ class TelegramBot:
             :return: None
             """
             if self.is_personal_chat(message):
+                self.add_user(message)
                 self.start_message_process(message)
 
         @self.bot.message_handler(commands=['help'])
@@ -37,6 +38,7 @@ class TelegramBot:
             :return: None
             """
             if self.is_personal_chat(message):
+                self.add_user(message)
                 self.help_message_process(message)
 
         @self.bot.message_handler(commands=['switch_language'])
@@ -48,6 +50,7 @@ class TelegramBot:
             """
             if not self.is_personal_chat(message):
                 return
+            self.add_user(message)
             user = self.users_database.get_user(message.from_user.id)
             if user is None:
                 self.send_command_message(message, 'error_message')
@@ -62,6 +65,7 @@ class TelegramBot:
             :return: None
             """
             if self.is_personal_chat(message):
+                user = self.add_user(message)
                 user = self.users_database.get_user(message.from_user.id)
                 if user is None:
                     self.send_command_message(message, 'error_message')
@@ -79,8 +83,8 @@ class TelegramBot:
             :param message: message to handle
             :return: None
             """
-            print(f"message: {message}")
             if self.is_personal_chat(message):
+                self.add_user(message)
                 self.text_message_process(message)
 
         @self.bot.callback_query_handler(func=lambda call: call.data in botConstants.AVAILABLE_LANGUAGES)
@@ -121,7 +125,6 @@ class TelegramBot:
                 return
             if not user.is_admin:
                 return
-            # self.send_text_message(call.message.chat.id, parse_mode='Markdown')
 
     def start_message_process(self, message):
         """
@@ -129,16 +132,7 @@ class TelegramBot:
         :param message: message to handle
         :return: id of sent message or None if message wasn't sent
         """
-        user = self.users_database.get_user(message.from_user.id)
-        # reply_keyboard = TelegramBot.get_reply_keyboard(user.language)
-        if user is None:
-            user_language = TelegramBot.get_user_language(message)
-            user = User(message.from_user.id, "common", user_language, False)
-            if user.tg_id in botConstants.ADMINS_ID:
-                user.is_admin = True
-                user.status = "prime"
-            self.users_database.add_user(user)
-
+        self.add_user(message)
         reply_message_id = self.send_command_message(
             message, 'greeting_message_with_name', message_format_values={'user_name': message.from_user.first_name},
             parse_mode='Markdown', reply_keyboard_id="start_message_reply_commands")
@@ -147,6 +141,17 @@ class TelegramBot:
             return self.send_command_message(message, 'greeting_message', parse_mode='Markdown',
                                              reply_keyboard_id="start_message_reply_commands")
         return reply_message_id
+
+    def add_user(self, message) -> User:
+        user = self.users_database.get_user(message.from_user.id)
+        if user is None:
+            user_language = TelegramBot.get_user_language(message)
+            user = User(message.from_user.id, "common", user_language, False)
+            if user.tg_id in botConstants.ADMINS_ID:
+                user.is_admin = True
+                user.status = "prime"
+            self.users_database.add_user(user)
+        return user
 
     def send_switch_language_message(self, message, user: User):
         self.bot.send_message(message.chat.id,
@@ -229,7 +234,6 @@ class TelegramBot:
         """
         Sends text message
         :param message_reply_to: message to reply to
-        :param chat_id: chat id to send message to
         :param message: message to send
         :param message_format_values: format of message
         :param reply_keyboard: reply keyboard to send
@@ -250,7 +254,8 @@ class TelegramBot:
 
         user = self.users_database.get_user(message.from_user.id)
         if split_text[0] in self.localizer.get_localized_text(user.language, "find_commands") and len(split_text) > 1:
-            split_text = split_text[1].lower().split(self.localizer.get_localized_text(user.language, "without_commands")[0])
+            split_text = split_text[1].lower().split(self.localizer.get_localized_text(user.language,
+                                                                                       "without_commands")[0])
             request = split_text[0]
             ban_words_list = None
             if len(split_text) > 1:
